@@ -55,7 +55,14 @@ namespace XlCodeExtractor
         public CodeExtractor()
         {
             InitializeComponent();
-            exportCodesToolStripMenuItem.Enabled = false;
+
+            ListeSourceCodeMenuItem.Enabled = false;
+            ExportSourceCodesMenuItem.Enabled = false;
+            closeSourceMenuItem.Enabled = false;
+
+            ListDestinationCodeMenuItem.Enabled = false;
+            ExportDestinationCodesMenuItem.Enabled = false;
+            closeDestinationMenuItem.Enabled = false;
 
             localAppPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             ExcelApp = new Microsoft.Office.Interop.Excel.Application() { Visible = false, DisplayAlerts = false, EnableEvents = false };
@@ -127,6 +134,7 @@ namespace XlCodeExtractor
             //@excelFileName = ExcelApp.GetOpenFilename(FileFilter: "Excel File |*.xlsb;*,xlsb", Title: "Open Excel File to check!");
             try
             {
+                ThisWorkbookCount = 0;
                 LoadWorkbookCodes();
             }
             catch (Exception Ex) { MessageBox.Show(String.Format("{0}\r\n{1}\r\n\r\n{2}\r\n\r\n{3}", Ex.Message, Ex.Source, Ex.StackTrace, "Please try launching again!"), "Loading Workbook Codes"); }
@@ -177,7 +185,7 @@ namespace XlCodeExtractor
                     switch (module.Type)
                     {
                         case vbext_ComponentType.vbext_ct_ClassModule:
-                            tnModule.Nodes.Add(module.Name);
+                            tnClassModules.Nodes.Add(module.Name);
                             if (!AreWorksheetExist(module.Name) & exportCode)
                             {
                                 //lblMessage.Text = String.Format("Removing Module '{0}'", module.Name);
@@ -251,7 +259,7 @@ namespace XlCodeExtractor
                             }
                             break;
                         case vbext_ComponentType.vbext_ct_StdModule: //"modules": "class_modules":
-                            tnClassModules.Nodes.Add(module.Name);
+                            tnModule.Nodes.Add(module.Name);
                             //lblMessage.Text = String.Format("Removing Module '{0}'", module.Name);
                             //lblMessage.Refresh();
                             //oModules.Remove(VBComponent: module);
@@ -302,19 +310,6 @@ namespace XlCodeExtractor
             File.Move(Path.Combine(filePath, String.Concat(fileName, fileExt)), destFileName: Path.Combine(filePath, String.Concat(lineFileName, fileExt)));
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            @excelFileName = ExcelApp.GetOpenFilename(FileFilter: "Excel File |*.xlsb;*,xlsb", Title: "Open Excel File to check!");
-            lblFilePath.Text = @excelFileName;
-            localAppPath = System.IO.Path.Combine(localAppPath, System.IO.Path.GetFileNameWithoutExtension(@excelFileName));
-            if (System.IO.Directory.Exists(path: localAppPath))
-            { System.IO.Directory.Delete(path: localAppPath, recursive: true); }
-            System.IO.Directory.CreateDirectory(path: localAppPath);
-            GetActiveWorkbook();
-            exportCodesToolStripMenuItem.Enabled = true;
-            LoadWorkbookCodes();
-        }
-
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!Object.Equals(oActiveWorkbook, null))
@@ -338,6 +333,67 @@ namespace XlCodeExtractor
         {
             ThisWorkbookCount = 0;
             LoadWorkbookCodes(exportCode: true);
+        }
+
+        private void tvListCodes_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+
+        }
+
+        private void ListeSourceCodeMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ListDestinationMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ExportSourceCodesMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ExportDestinationCodesMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void openSourceMenuItem_Click(object sender, EventArgs e)
+        {
+            @excelFileName = ExcelApp.GetOpenFilename(FileFilter: "Excel File |*.xlsb;*,xlsb", Title: "Open Excel File to check!");
+            lblFilePath.Text = @excelFileName;
+            localAppPath = System.IO.Path.Combine(localAppPath, System.IO.Path.GetFileNameWithoutExtension(@excelFileName));
+            if (System.IO.Directory.Exists(path: localAppPath))
+            { System.IO.Directory.Delete(path: localAppPath, recursive: true); }
+            System.IO.Directory.CreateDirectory(path: localAppPath);
+            GetActiveWorkbook();
+            ListeSourceCodeMenuItem.Enabled = true;
+            ExportSourceCodesMenuItem.Enabled = true;
+            closeSourceMenuItem.Enabled = true;
+            LoadWorkbookCodes();
+        }
+
+        private void openDestinationMenuItem_Click(object sender, EventArgs e)
+        {
+            @excelFileName = ExcelApp.GetOpenFilename(FileFilter: "Excel File |*.xlsb;*,xlsb", Title: "Open Excel File to check!");
+            lblFilePath.Text = @excelFileName;
+            localAppPath = System.IO.Path.Combine(localAppPath, System.IO.Path.GetFileNameWithoutExtension(@excelFileName));
+            if (System.IO.Directory.Exists(path: localAppPath))
+            { System.IO.Directory.Delete(path: localAppPath, recursive: true); }
+            System.IO.Directory.CreateDirectory(path: localAppPath);
+            GetActiveWorkbook();
+            ListDestinationCodeMenuItem.Enabled = true;
+            ExportDestinationCodesMenuItem.Enabled = true;
+            closeDestinationMenuItem.Enabled = true;
+
+            LoadWorkbookCodes();
+        }
+
+        private void CodeExtractor_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
