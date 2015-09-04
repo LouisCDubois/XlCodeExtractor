@@ -42,13 +42,14 @@
             this.ExportDestinationCodesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeDestinationMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tvSourceListCodes = new System.Windows.Forms.TreeView();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtSourceCode = new System.Windows.Forms.TextBox();
             this.lblSource = new System.Windows.Forms.Label();
-            this.lblDestination = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tvDestinationListCodes = new System.Windows.Forms.TreeView();
             this.lblSourceFilePath = new System.Windows.Forms.Label();
             this.lblDestinationFilePath = new System.Windows.Forms.Label();
+            this.txtDestinationCode = new System.Windows.Forms.TextBox();
+            this.lblDestination = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -164,22 +165,24 @@
             // tvSourceListCodes
             // 
             this.tvSourceListCodes.CheckBoxes = true;
-            this.tvSourceListCodes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvSourceListCodes.Location = new System.Drawing.Point(0, 0);
             this.tvSourceListCodes.Name = "tvSourceListCodes";
-            this.tvSourceListCodes.Size = new System.Drawing.Size(485, 72);
+            this.tvSourceListCodes.Size = new System.Drawing.Size(486, 151);
             this.tvSourceListCodes.TabIndex = 5;
             this.tvSourceListCodes.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvListCodes_AfterSelect);
             // 
-            // textBox1
+            // txtSourceCode
             // 
-            this.textBox1.BackColor = System.Drawing.SystemColors.Info;
-            this.textBox1.Location = new System.Drawing.Point(12, 204);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(359, 281);
-            this.textBox1.TabIndex = 6;
+            this.txtSourceCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSourceCode.BackColor = System.Drawing.SystemColors.Info;
+            this.txtSourceCode.Location = new System.Drawing.Point(0, 157);
+            this.txtSourceCode.Multiline = true;
+            this.txtSourceCode.Name = "txtSourceCode";
+            this.txtSourceCode.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtSourceCode.Size = new System.Drawing.Size(485, 192);
+            this.txtSourceCode.TabIndex = 6;
             // 
             // lblSource
             // 
@@ -190,16 +193,6 @@
             this.lblSource.TabIndex = 7;
             this.lblSource.Text = "Source";
             // 
-            // lblDestination
-            // 
-            this.lblDestination.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDestination.AutoSize = true;
-            this.lblDestination.Location = new System.Drawing.Point(505, 45);
-            this.lblDestination.Name = "lblDestination";
-            this.lblDestination.Size = new System.Drawing.Size(60, 13);
-            this.lblDestination.TabIndex = 8;
-            this.lblDestination.Text = "Destination";
-            // 
             // splitContainer1
             // 
             this.splitContainer1.Location = new System.Drawing.Point(12, 61);
@@ -208,26 +201,27 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.tvSourceListCodes);
+            this.splitContainer1.Panel1.Controls.Add(this.txtSourceCode);
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.txtDestinationCode);
             this.splitContainer1.Panel2.Controls.Add(this.tvDestinationListCodes);
-            this.splitContainer1.Size = new System.Drawing.Size(979, 72);
+            this.splitContainer1.Size = new System.Drawing.Size(979, 352);
             this.splitContainer1.SplitterDistance = 485;
             this.splitContainer1.TabIndex = 9;
             // 
             // tvDestinationListCodes
             // 
-            this.tvDestinationListCodes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvDestinationListCodes.Location = new System.Drawing.Point(0, 0);
+            this.tvDestinationListCodes.Location = new System.Drawing.Point(3, 0);
             this.tvDestinationListCodes.Name = "tvDestinationListCodes";
-            this.tvDestinationListCodes.Size = new System.Drawing.Size(490, 72);
+            this.tvDestinationListCodes.Size = new System.Drawing.Size(484, 151);
             this.tvDestinationListCodes.TabIndex = 10;
             // 
             // lblSourceFilePath
             // 
             this.lblSourceFilePath.AutoSize = true;
-            this.lblSourceFilePath.Location = new System.Drawing.Point(12, 139);
+            this.lblSourceFilePath.Location = new System.Drawing.Point(12, 416);
             this.lblSourceFilePath.Name = "lblSourceFilePath";
             this.lblSourceFilePath.Size = new System.Drawing.Size(44, 13);
             this.lblSourceFilePath.TabIndex = 10;
@@ -236,23 +230,44 @@
             // lblDestinationFilePath
             // 
             this.lblDestinationFilePath.AutoSize = true;
-            this.lblDestinationFilePath.Location = new System.Drawing.Point(505, 139);
+            this.lblDestinationFilePath.Location = new System.Drawing.Point(501, 416);
             this.lblDestinationFilePath.Name = "lblDestinationFilePath";
             this.lblDestinationFilePath.Size = new System.Drawing.Size(63, 13);
             this.lblDestinationFilePath.TabIndex = 11;
             this.lblDestinationFilePath.Text = "Destination:";
             // 
+            // txtDestinationCode
+            // 
+            this.txtDestinationCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtDestinationCode.BackColor = System.Drawing.SystemColors.Info;
+            this.txtDestinationCode.Location = new System.Drawing.Point(3, 157);
+            this.txtDestinationCode.Multiline = true;
+            this.txtDestinationCode.Name = "txtDestinationCode";
+            this.txtDestinationCode.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtDestinationCode.Size = new System.Drawing.Size(484, 192);
+            this.txtDestinationCode.TabIndex = 12;
+            // 
+            // lblDestination
+            // 
+            this.lblDestination.AutoSize = true;
+            this.lblDestination.Location = new System.Drawing.Point(501, 45);
+            this.lblDestination.Name = "lblDestination";
+            this.lblDestination.Size = new System.Drawing.Size(60, 13);
+            this.lblDestination.TabIndex = 12;
+            this.lblDestination.Text = "Destination";
+            // 
             // CodeExtractor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1003, 593);
+            this.ClientSize = new System.Drawing.Size(1003, 451);
+            this.Controls.Add(this.lblDestination);
             this.Controls.Add(this.lblDestinationFilePath);
             this.Controls.Add(this.lblSourceFilePath);
-            this.Controls.Add(this.lblDestination);
             this.Controls.Add(this.lblSource);
             this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MainMenuStrip = this.menuStrip1;
@@ -263,7 +278,9 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -276,7 +293,7 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.TreeView tvSourceListCodes;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtSourceCode;
         private System.Windows.Forms.ToolStripMenuItem fileSourceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openSourceMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ListeSourceCodeMenuItem;
@@ -288,11 +305,12 @@
         private System.Windows.Forms.ToolStripMenuItem closeSourceMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeDestinationMenuItem;
         private System.Windows.Forms.Label lblSource;
-        private System.Windows.Forms.Label lblDestination;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TreeView tvDestinationListCodes;
         private System.Windows.Forms.Label lblSourceFilePath;
         private System.Windows.Forms.Label lblDestinationFilePath;
+        private System.Windows.Forms.TextBox txtDestinationCode;
+        private System.Windows.Forms.Label lblDestination;
     }
 }
 
