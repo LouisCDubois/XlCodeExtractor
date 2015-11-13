@@ -8,8 +8,8 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace XlCodeExtractor.Xl
 {
-    public  class XlDestination
+    public  class XlDestination : XlCodes
     {
-        public Excel.Workbook oWorkbook { set; get; }
+        //public Excel.Workbook oWorkbook { set; get; }
     }
 }

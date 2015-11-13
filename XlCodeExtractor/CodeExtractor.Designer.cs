@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("VBASolution");
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,16 +46,21 @@
             this.txtSourceCode = new System.Windows.Forms.TextBox();
             this.lblSource = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.txtDestinationCode = new System.Windows.Forms.TextBox();
             this.tvDestinationListCodes = new System.Windows.Forms.TreeView();
             this.lblSourceFilePath = new System.Windows.Forms.Label();
             this.lblDestinationFilePath = new System.Windows.Forms.Label();
-            this.txtDestinationCode = new System.Windows.Forms.TextBox();
             this.lblDestination = new System.Windows.Forms.Label();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.tvVBASolution = new System.Windows.Forms.TreeView();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -65,7 +71,7 @@
             this.fileDestinationToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1003, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1322, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -211,6 +217,19 @@
             this.splitContainer1.SplitterDistance = 485;
             this.splitContainer1.TabIndex = 9;
             // 
+            // txtDestinationCode
+            // 
+            this.txtDestinationCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtDestinationCode.BackColor = System.Drawing.SystemColors.Info;
+            this.txtDestinationCode.Location = new System.Drawing.Point(3, 157);
+            this.txtDestinationCode.Multiline = true;
+            this.txtDestinationCode.Name = "txtDestinationCode";
+            this.txtDestinationCode.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtDestinationCode.Size = new System.Drawing.Size(484, 192);
+            this.txtDestinationCode.TabIndex = 12;
+            // 
             // tvDestinationListCodes
             // 
             this.tvDestinationListCodes.Location = new System.Drawing.Point(3, 0);
@@ -236,19 +255,6 @@
             this.lblDestinationFilePath.TabIndex = 11;
             this.lblDestinationFilePath.Text = "Destination:";
             // 
-            // txtDestinationCode
-            // 
-            this.txtDestinationCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtDestinationCode.BackColor = System.Drawing.SystemColors.Info;
-            this.txtDestinationCode.Location = new System.Drawing.Point(3, 157);
-            this.txtDestinationCode.Multiline = true;
-            this.txtDestinationCode.Name = "txtDestinationCode";
-            this.txtDestinationCode.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtDestinationCode.Size = new System.Drawing.Size(484, 192);
-            this.txtDestinationCode.TabIndex = 12;
-            // 
             // lblDestination
             // 
             this.lblDestination.AutoSize = true;
@@ -258,11 +264,36 @@
             this.lblDestination.TabIndex = 12;
             this.lblDestination.Text = "Destination";
             // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Location = new System.Drawing.Point(1019, 27);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.tvVBASolution);
+            this.splitContainer2.Size = new System.Drawing.Size(291, 386);
+            this.splitContainer2.SplitterDistance = 137;
+            this.splitContainer2.TabIndex = 13;
+            // 
+            // tvVBASolution
+            // 
+            this.tvVBASolution.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvVBASolution.Location = new System.Drawing.Point(0, 0);
+            this.tvVBASolution.Name = "tvVBASolution";
+            treeNode1.Name = "nRootVBASolution";
+            treeNode1.Text = "VBASolution";
+            this.tvVBASolution.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode1});
+            this.tvVBASolution.Size = new System.Drawing.Size(150, 386);
+            this.tvVBASolution.TabIndex = 0;
+            // 
             // CodeExtractor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1003, 451);
+            this.ClientSize = new System.Drawing.Size(1322, 469);
+            this.Controls.Add(this.splitContainer2);
             this.Controls.Add(this.lblDestination);
             this.Controls.Add(this.lblDestinationFilePath);
             this.Controls.Add(this.lblSourceFilePath);
@@ -283,6 +314,9 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -311,6 +345,8 @@
         private System.Windows.Forms.Label lblDestinationFilePath;
         private System.Windows.Forms.TextBox txtDestinationCode;
         private System.Windows.Forms.Label lblDestination;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.TreeView tvVBASolution;
     }
 }
 

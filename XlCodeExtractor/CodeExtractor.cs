@@ -64,14 +64,14 @@ namespace XlCodeExtractor
             ExportDestinationCodesMenuItem.Enabled = false;
             closeDestinationMenuItem.Enabled = false;
 
-            localAppPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            ExcelApp = new Microsoft.Office.Interop.Excel.Application() { Visible = false, DisplayAlerts = false, EnableEvents = false };
+            localAppPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            ExcelApp = new Excel.Application() { Visible = false, DisplayAlerts = false, EnableEvents = false };
 
 
 
             //xlApp = new Microsoft.Office.Interop.Excel.Application();
-            ExcelApp.WorkbookOpen += new Microsoft.Office.Interop.Excel.AppEvents_WorkbookOpenEventHandler(app_WorkbookOpen);
-            ExcelApp.WorkbookActivate += new Microsoft.Office.Interop.Excel.AppEvents_WorkbookActivateEventHandler(app_WorkbookActivate);
+            ExcelApp.WorkbookOpen += new Excel.AppEvents_WorkbookOpenEventHandler(app_WorkbookOpen);
+            ExcelApp.WorkbookActivate += new Excel.AppEvents_WorkbookActivateEventHandler(app_WorkbookActivate);
 
             //Add an event handler for the WorkbookBeforeClose Event of the
             //Application object.
@@ -86,7 +86,7 @@ namespace XlCodeExtractor
             //xlSheet3.Change += EventDel_CellsChange;
 
             //Make Excel visible and give the user control.
-            ExcelApp.Visible = true;
+            //ExcelApp.Visible = true;
             ExcelApp.UserControl = true;
 
         }
@@ -111,12 +111,12 @@ namespace XlCodeExtractor
                " on " + Target.Worksheet.Name);
         }
 
-        void app_WorkbookActivate(Microsoft.Office.Interop.Excel.Workbook Wb)
+        void app_WorkbookActivate(Excel.Workbook Wb)
         {
             MessageBox.Show(Wb.FullName);
         }
 
-        void app_WorkbookOpen(Microsoft.Office.Interop.Excel.Workbook Wb)
+        void app_WorkbookOpen(Excel.Workbook Wb)
         {
             MessageBox.Show(Wb.FullName);
         }
@@ -125,11 +125,11 @@ namespace XlCodeExtractor
         private Excel.Workbook GetActiveWorkbook()
         {
             oWorkbooks = this.ExcelApp.Workbooks;
-            localAppPath = System.IO.Path.Combine(localAppPath, System.IO.Path.GetFileNameWithoutExtension(@excelFileName));
-            if (System.IO.Directory.Exists(path: localAppPath))
-            { System.IO.Directory.Delete(path: localAppPath, recursive: true); }
-            System.IO.Directory.CreateDirectory(path: localAppPath);
-            return oWorkbooks.Open(@excelFileName, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
+            localAppPath = Path.Combine(localAppPath, Path.GetFileNameWithoutExtension(@excelFileName));
+            if (Directory.Exists(path: localAppPath))
+            { Directory.Delete(path: localAppPath, recursive: true); }
+            Directory.CreateDirectory(path: localAppPath);
+            return oWorkbooks.Open(@excelFileName, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value);
         }
 
 
@@ -187,29 +187,34 @@ namespace XlCodeExtractor
             String FileCode = String.Empty;
             String FileName = String.Empty;
             Int32 CountOfLines = 0;
-            TreeNode tnModule;
-            TreeNode tnExcelObjects;
-            TreeNode tnForms;
-            TreeNode tnClassModules;
+            TreeNode tnModule = new TreeNode(text: "Modules");
+            TreeNode tnExcelObjects = new TreeNode(text: "Microsoft_Excel_Objects");
+            TreeNode tnForms = new TreeNode(text: "Forms");
+            TreeNode tnClassModules = new TreeNode(text: "Class_Modules");
 
-            
-            if (WbType.CompareTo(WorkbookType.Source) == 0)
-            {
-                tvSourceListCodes.Nodes.Clear();
-                tnModule = tvSourceListCodes.Nodes.Add(text: "Modules");
-                tnExcelObjects = tvSourceListCodes.Nodes.Add(text: "Microsoft_Excel_Objects");
-                tnForms = tvSourceListCodes.Nodes.Add(text: "Forms");
-                tnClassModules = tvSourceListCodes.Nodes.Add(text: "Class_Modules");
-            }
-            else
-            {
-                tvDestinationListCodes.Nodes.Clear();
-                tnModule = tvDestinationListCodes.Nodes.Add(text: "Modules");
-                tnExcelObjects = tvDestinationListCodes.Nodes.Add(text: "Microsoft_Excel_Objects");
-                tnForms = tvDestinationListCodes.Nodes.Add(text: "Forms");
-                tnClassModules = tvDestinationListCodes.Nodes.Add(text: "Class_Modules");
-            }
+            //if (WbType.CompareTo(WorkbookType.Source) == 0)
+            //{
+            //    tvVBASolution.Nodes.Clear();
+            //    tvVBASolution.Nodes.Add(tnModule);
+            //    tvVBASolution.Nodes.Add(tnExcelObjects);
+            //    tvVBASolution.Nodes.Add(tnForms);
+            //    tvVBASolution.Nodes.Add(tnClassModules);
 
+            //}
+            //else
+            //{
+            //    tvDestinationListCodes.Nodes.Clear();
+            //    tvDestinationListCodes.Nodes.Add(tnModule);
+            //    tvDestinationListCodes.Nodes.Add(tnExcelObjects);
+            //    tvDestinationListCodes.Nodes.Add(tnForms);
+            //    tvDestinationListCodes.Nodes.Add(tnClassModules);
+            //}
+
+            tvSourceListCodes.Nodes.Clear();
+            tvSourceListCodes.Nodes.Add(tnModule);
+            tvSourceListCodes.Nodes.Add(tnExcelObjects);
+            tvSourceListCodes.Nodes.Add(tnForms);
+            tvSourceListCodes.Nodes.Add(tnClassModules);
 
             try
             {
@@ -235,9 +240,9 @@ namespace XlCodeExtractor
                                     if (exportCode)
                                     {
                                         FilePath = "Class_Modules";
-                                        FilePath = System.IO.Path.Combine(localAppPath, FilePath);
-                                        if (!System.IO.Directory.Exists(path: FilePath))
-                                        { System.IO.Directory.CreateDirectory(path: FilePath); }
+                                        FilePath = Path.Combine(localAppPath, FilePath);
+                                        if (!Directory.Exists(path: FilePath))
+                                        { Directory.CreateDirectory(path: FilePath); }
                                         module.Export(FileName: String.Concat(Path.Combine(FilePath, module.Name), ".cls"));
                                         CodeExport(filePath: FilePath, fileName: module.Name, fileExt: ".cls", text: FileCode);
                                     }
@@ -245,10 +250,20 @@ namespace XlCodeExtractor
                                     Ligne 05: Attribute VB_Name = "CFOConstant"
                                     Ligne 11: Const CURRENT_VERSION As String = "10.315.04.13388"
                                     */
+                                    Int32 CountOfDeclarationLines = module.CodeModule.CountOfDeclarationLines;
+                                    string CFOConstantVersion = String.Empty;
                                     if (String.Equals(module.Name, "CFOConstant"))
                                     {
-                                        string CFOConstantVersion = module.CodeModule.get_Lines(StartLine: 4, Count: 1).Split('=')[1].Replace("\"", "").Replace(".", "_").Trim();
-                                        Directory.CreateDirectory(Path.Combine(localAppPath, CFOConstantVersion));
+                                        for (int i = 1; i < module.CodeModule.CountOfDeclarationLines; i++)
+                                        {
+                                            CFOConstantVersion = module.CodeModule.get_Lines(StartLine: i, Count: 1).Split('=')[0].Replace("\"", "").Replace(".", "_").Trim();
+                                            if (String.Equals(CFOConstantVersion, "Const CURRENT_VERSION As String"))
+                                            {
+                                                CFOConstantVersion = module.CodeModule.get_Lines(StartLine: i, Count: 1).Split('=')[1].Replace("\"", "").Replace(".", "_").Trim();
+                                                Directory.CreateDirectory(Path.Combine(localAppPath, CFOConstantVersion));
+                                                break;
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -276,9 +291,9 @@ namespace XlCodeExtractor
                                 {
 
                                     FilePath = "Microsoft_Excel_Objects";
-                                    FilePath = System.IO.Path.Combine(localAppPath, FilePath);
-                                    if (!System.IO.Directory.Exists(path: FilePath))
-                                    { System.IO.Directory.CreateDirectory(path: FilePath); }
+                                    FilePath = Path.Combine(localAppPath, FilePath);
+                                    if (!Directory.Exists(path: FilePath))
+                                    { Directory.CreateDirectory(path: FilePath); }
                                     module.Export(FileName: String.Concat(Path.Combine(FilePath, module.Name), ".cls"));
                                     //CodeExport(filePath: String.Concat(Path.Combine(FilePath, module.Name), ".cls"), text: FileCode);
                                     CodeExport(filePath: FilePath, fileName: module.Name, fileExt: ".cls", text: FileCode);
@@ -298,9 +313,9 @@ namespace XlCodeExtractor
                                 {
 
                                     FilePath = "Forms";
-                                    FilePath = System.IO.Path.Combine(localAppPath, FilePath);
-                                    if (!System.IO.Directory.Exists(path: FilePath))
-                                    { System.IO.Directory.CreateDirectory(path: FilePath); }
+                                    FilePath = Path.Combine(localAppPath, FilePath);
+                                    if (!Directory.Exists(path: FilePath))
+                                    { Directory.CreateDirectory(path: FilePath); }
                                     module.Export(FileName: String.Concat(Path.Combine(FilePath, module.Name), ".frm"));
                                     //CodeExport(filePath: FilePath, fileName: module.Name, fileExt: ".frm", text: FileCode);
                                 }
@@ -320,9 +335,9 @@ namespace XlCodeExtractor
                                 {
 
                                     FilePath = "Modules";
-                                    FilePath = System.IO.Path.Combine(localAppPath, FilePath);
-                                    if (!System.IO.Directory.Exists(path: FilePath))
-                                    { System.IO.Directory.CreateDirectory(path: FilePath); }
+                                    FilePath = Path.Combine(localAppPath, FilePath);
+                                    if (!Directory.Exists(path: FilePath))
+                                    { Directory.CreateDirectory(path: FilePath); }
                                     module.Export(FileName: String.Concat(Path.Combine(FilePath, module.Name), ".bas"));
                                     //CodeExport(filePath: FilePath, fileName: module.Name, fileExt: ".bas", text: FileCode);
                                 }
@@ -345,7 +360,7 @@ namespace XlCodeExtractor
         private Boolean AreWorksheetExist(string WorksheetName)
         {
             Boolean WorksheetExist = false;
-            foreach (Microsoft.Office.Interop.Excel.Worksheet oWs in oActiveWorkbook.Worksheets)
+            foreach (Excel.Worksheet oWs in oActiveWorkbook.Worksheets)
             {
                 if (String.Equals(oWs.Name, WorksheetName)) { WorksheetExist = true; break; }
             }
@@ -367,15 +382,15 @@ namespace XlCodeExtractor
         {
             if (!Object.Equals(oActiveWorkbook, null))
             {
-                oActiveWorkbook.Close(SaveChanges: false);
+                //oActiveWorkbook.Close(SaveChanges: false);
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(oActiveWorkbook);
                 oActiveWorkbook = null;
 
-                oXlSource.oWorkbook.Close(SaveChanges: false);
+                //oXlSource.oWorkbook.Close(SaveChanges: false);
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(oXlSource.oWorkbook);
                 oXlSource.oWorkbook = null;
 
-                oXlDestination.oWorkbook.Close(SaveChanges: false);
+                //oXlDestination.oWorkbook.Close(SaveChanges: false);
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(oXlDestination.oWorkbook);
                 oXlDestination.oWorkbook = null;
             }
@@ -445,7 +460,8 @@ namespace XlCodeExtractor
 
         private void openSourceMenuItem_Click(object sender, EventArgs e)
         {
-            lblSourceFilePath.Text = OpenWorkbook();
+            oXlSource.filePath = OpenWorkbook();
+            lblSourceFilePath.Text = oXlSource.filePath;
             oXlSource.oWorkbook =  GetActiveWorkbook();
 
             ThisWorkbookCount = 0;
@@ -458,7 +474,8 @@ namespace XlCodeExtractor
 
         private void openDestinationMenuItem_Click(object sender, EventArgs e)
         {
-            lblDestinationFilePath.Text = OpenWorkbook();
+            oXlDestination.filePath = OpenWorkbook();
+            lblDestinationFilePath.Text = oXlDestination.filePath;
             oXlDestination.oWorkbook = GetActiveWorkbook();
 
             ThisWorkbookCount = 0;
@@ -476,14 +493,18 @@ namespace XlCodeExtractor
 
         private void closeSourceMenuItem_Click(object sender, EventArgs e)
         {
-            ExcelApp.Workbooks.Item[oXlSource.oWorkbook.Name].Close();// oXlDestination.oDestinationWorkbook.Close(SaveChanges: true, Filename: String.Format("_{0}", oXlSource.oWorkbook.Name));
+            //ExcelApp.Workbooks.Item[oXlSource.oWorkbook.Name].Close();
+            oXlSource.oWorkbook.Close(SaveChanges: true, Filename: String.Format("_{0}", oXlSource.oWorkbook.Name));
             tvSourceListCodes.Nodes.Clear();
+            txtSourceCode.Text = String.Empty;
         }
 
         private void closeDestinationMenuItem_Click(object sender, EventArgs e)
         {
-            ExcelApp.Workbooks.Item[oXlDestination.oWorkbook.Name].Close(); //oXlDestination.oDestinationWorkbook.Close(SaveChanges: true, Filename: String.Format("_{0}",oXlDestination.oDestinationWorkbook.Name));
+            //ExcelApp.Workbooks.Item[oXlDestination.oWorkbook.Name].Close(); 
+            oXlDestination.oWorkbook.Close(SaveChanges: true, Filename: String.Format("_{0}",oXlDestination.oWorkbook.Name));
             tvDestinationListCodes.Nodes.Clear();
+            txtDestinationCode.Text = String.Empty;
         }
     }
 }

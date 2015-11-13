@@ -46,6 +46,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Vbe.Interop.Forms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -85,7 +86,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xl\XlDestination.cs" />
-    <Compile Include="Xl\Xls.cs" />
+    <Compile Include="Xl\XlCodes.cs" />
     <Compile Include="Xl\XlSource.cs" />
     <EmbeddedResource Include="CodeExtractor.resx">
       <DependentUpon>CodeExtractor.cs</DependentUpon>
