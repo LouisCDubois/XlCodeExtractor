@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Vbe.Interop;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,8 @@ namespace XlCodeExtractor.Xl
         public string fileName{ get; set; }
         public string filePath { get; set; }
         public Excel.Workbook oWorkbook { set; get; }
+        public VBComponents oModules { set; get; }
+
 
         public List<string> XlObjects = new List<string>();
         public List<string> ClassObjects = new List<string>();

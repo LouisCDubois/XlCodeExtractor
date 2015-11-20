@@ -9,7 +9,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 //using ToolsExcel = Microsoft.Office.Tools.Excel ;
 using Microsoft.Vbe.Interop;
 using System.IO;
-
+using IniFile;
 using XlCodeExtractor.Xl;
 
 namespace XlCodeExtractor
@@ -45,6 +45,8 @@ namespace XlCodeExtractor
         XlSource oXlSource = new XlSource();
         XlDestination oXlDestination = new XlDestination();
 
+
+
         public enum MsoAutomationSecurity
         {
             msoAutomationSecurityLow = 1,
@@ -56,15 +58,23 @@ namespace XlCodeExtractor
         {
             InitializeComponent();
 
+            localAppPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            IniProfile ini = new IniProfile(string.Format("{0}testIni.ini", localAppPath));
+            ini.IniWriteValue("Password", "ABC", "123456");
+            ini.IniWriteValue("Password", "ABCapp@micronium", "B?[L0gTgV");
+
+            //ini.Write("cfoapp@soltimum", "BfWLK?[0gTgc");
+
             ListeSourceCodeMenuItem.Enabled = false;
             ExportSourceCodesMenuItem.Enabled = false;
             closeSourceMenuItem.Enabled = false;
+            saveCodesSourceMenuItem.Enabled = false;
 
             ListDestinationCodeMenuItem.Enabled = false;
             ExportDestinationCodesMenuItem.Enabled = false;
             closeDestinationMenuItem.Enabled = false;
+            SaveCodesDestinationMenuItem.Enabled = false;
 
-            localAppPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             ExcelApp = new Excel.Application() { Visible = false, DisplayAlerts = false, EnableEvents = false };
 
 
@@ -149,12 +159,48 @@ namespace XlCodeExtractor
             {
                 case WorkbookType.Source:
                     txtSourceCode.Text = codes;
+                    rTxtSelectedModuleCode.Text = codes;
                     break;
                 case WorkbookType.Destination:
                     txtDestinationCode.Text = codes;
                     break;
             }
         }
+
+        private void ClearViewCode(WorkbookType type)
+        {
+            switch (type)
+            {
+                case WorkbookType.Source:
+                    txtSourceCode.Text = string.Empty;
+                    rTxtSelectedModuleCode.Text = string.Empty;
+                    tvSourceListCodes.Nodes.Clear();
+                    tvVBASolution.Nodes.Clear();
+                    break;
+                case WorkbookType.Destination:
+                    txtDestinationCode.Text = string.Empty;
+                    tvDestinationListCodes.Nodes.Clear();
+                    break;
+            }
+        }
+
+        private void DesableMenu(WorkbookType type)
+        {
+            switch (type)
+            {
+                case WorkbookType.Source:
+                    ListeSourceCodeMenuItem.Enabled = false;
+                    ExportSourceCodesMenuItem.Enabled = false;
+                    closeSourceMenuItem.Enabled = false;
+                    break;
+                case WorkbookType.Destination:
+                    ListDestinationCodeMenuItem.Enabled = false;
+                    ExportDestinationCodesMenuItem.Enabled = false;
+                    closeDestinationMenuItem.Enabled = false;
+                    break;
+            }
+        }
+
         private void LoadWorkbookCodes(Excel.Workbook Wb, XlCodeExtractor.WorkbookType WbType, Boolean exportCode = false) //
         {
             oActiveWorkbook = Wb;
@@ -192,29 +238,33 @@ namespace XlCodeExtractor
             TreeNode tnForms = new TreeNode(text: "Forms");
             TreeNode tnClassModules = new TreeNode(text: "Class_Modules");
 
-            //if (WbType.CompareTo(WorkbookType.Source) == 0)
-            //{
-            //    tvVBASolution.Nodes.Clear();
-            //    tvVBASolution.Nodes.Add(tnModule);
-            //    tvVBASolution.Nodes.Add(tnExcelObjects);
-            //    tvVBASolution.Nodes.Add(tnForms);
-            //    tvVBASolution.Nodes.Add(tnClassModules);
 
-            //}
-            //else
-            //{
-            //    tvDestinationListCodes.Nodes.Clear();
-            //    tvDestinationListCodes.Nodes.Add(tnModule);
-            //    tvDestinationListCodes.Nodes.Add(tnExcelObjects);
-            //    tvDestinationListCodes.Nodes.Add(tnForms);
-            //    tvDestinationListCodes.Nodes.Add(tnClassModules);
-            //}
+            if (WbType.CompareTo(WorkbookType.Source) == 0)
+            {
+                oXlSource.oModules = oModules;
+                tvVBASolution.Nodes.Clear();
+                tvVBASolution.Nodes.Add(tnModule);
+                tvVBASolution.Nodes.Add(tnExcelObjects);
+                tvVBASolution.Nodes.Add(tnForms);
+                tvVBASolution.Nodes.Add(tnClassModules);
 
-            tvSourceListCodes.Nodes.Clear();
-            tvSourceListCodes.Nodes.Add(tnModule);
-            tvSourceListCodes.Nodes.Add(tnExcelObjects);
-            tvSourceListCodes.Nodes.Add(tnForms);
-            tvSourceListCodes.Nodes.Add(tnClassModules);
+                tvSourceListCodes.Nodes.Clear();
+                tvSourceListCodes.Nodes.Add(tnModule.Clone() as TreeNode );
+                tvSourceListCodes.Nodes.Add(tnExcelObjects.Clone() as TreeNode);
+                tvSourceListCodes.Nodes.Add(tnForms.Clone() as TreeNode);
+                tvSourceListCodes.Nodes.Add(tnClassModules.Clone() as TreeNode);
+            }
+            else
+            {
+                oXlDestination.oModules = oModules;
+
+                tvDestinationListCodes.Nodes.Clear();
+                tvDestinationListCodes.Nodes.Add(tnModule.Clone() as TreeNode);
+                tvDestinationListCodes.Nodes.Add(tnExcelObjects.Clone() as TreeNode);
+                tvDestinationListCodes.Nodes.Add(tnForms.Clone() as TreeNode);
+                tvDestinationListCodes.Nodes.Add(tnClassModules.Clone() as TreeNode);
+            }
+
 
             try
             {
@@ -382,21 +432,31 @@ namespace XlCodeExtractor
         {
             if (!Object.Equals(oActiveWorkbook, null))
             {
-                //oActiveWorkbook.Close(SaveChanges: false);
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(oActiveWorkbook);
                 oActiveWorkbook = null;
+            }
 
-                //oXlSource.oWorkbook.Close(SaveChanges: false);
+            if (!object.Equals(oXlSource.oWorkbook, null))
+            {
+                oXlSource.oWorkbook.Close(SaveChanges: false);
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(oXlSource.oWorkbook);
                 oXlSource.oWorkbook = null;
+            }
 
-                //oXlDestination.oWorkbook.Close(SaveChanges: false);
+            if (!object.Equals(oXlDestination.oWorkbook, null))
+            {
+                oXlDestination.oWorkbook.Close(SaveChanges: false);
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(oXlDestination.oWorkbook);
                 oXlDestination.oWorkbook = null;
             }
-            ExcelApp.Quit();
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(ExcelApp);
-            ExcelApp = null;
+
+            if (!object.Equals(ExcelApp, null))
+            {
+                ExcelApp.Quit();
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(ExcelApp);
+                ExcelApp = null;
+            }
+
             System.Windows.Forms.Application.Exit();
         }
 
@@ -463,7 +523,7 @@ namespace XlCodeExtractor
             oXlSource.filePath = OpenWorkbook();
             lblSourceFilePath.Text = oXlSource.filePath;
             oXlSource.oWorkbook =  GetActiveWorkbook();
-
+            
             ThisWorkbookCount = 0;
             LoadWorkbookCodes(oXlSource.oWorkbook, WbType: WorkbookType.Source );
 
@@ -495,16 +555,42 @@ namespace XlCodeExtractor
         {
             //ExcelApp.Workbooks.Item[oXlSource.oWorkbook.Name].Close();
             oXlSource.oWorkbook.Close(SaveChanges: true, Filename: String.Format("_{0}", oXlSource.oWorkbook.Name));
-            tvSourceListCodes.Nodes.Clear();
-            txtSourceCode.Text = String.Empty;
+            ClearViewCode(WorkbookType.Source);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(oXlSource.oWorkbook);
+            oXlSource.oWorkbook = null;
         }
 
         private void closeDestinationMenuItem_Click(object sender, EventArgs e)
         {
             //ExcelApp.Workbooks.Item[oXlDestination.oWorkbook.Name].Close(); 
             oXlDestination.oWorkbook.Close(SaveChanges: true, Filename: String.Format("_{0}",oXlDestination.oWorkbook.Name));
-            tvDestinationListCodes.Nodes.Clear();
-            txtDestinationCode.Text = String.Empty;
+            ClearViewCode(WorkbookType.Destination );
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(oXlDestination.oWorkbook);
+            oXlDestination.oWorkbook = null;
+        }
+
+        private void tvVBASolution_DoubleClick(object sender, EventArgs e)
+        {
+            TreeNode selectedNode = tvVBASolution.SelectedNode;
+            foreach (VBComponent module in oXlSource.oModules)
+            {
+                if (string.Equals(module.Name, selectedNode.Text ))
+                {
+                    string fileCode = module.CodeModule.get_Lines(StartLine: 1, Count: module.CodeModule.CountOfLines);
+                    ViewCode(type: WorkbookType.Source, codes: fileCode);
+                    break;
+                }
+            }
+        }
+
+        private void saveCodesSourceMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void saveCodesDestinationMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

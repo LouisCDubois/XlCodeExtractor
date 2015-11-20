@@ -83,8 +83,14 @@
     <Compile Include="CodeExtractor.Designer.cs">
       <DependentUpon>CodeExtractor.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExcelCode.cs" />
+    <Compile Include="ExcelCodes.cs" />
+    <Compile Include="IniReader.cs" />
+    <Compile Include="Parser\IniParser.cs" />
+    <Compile Include="IniProfile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Parser\TestParser.cs" />
     <Compile Include="Xl\XlDestination.cs" />
     <Compile Include="Xl\XlCodes.cs" />
     <Compile Include="Xl\XlSource.cs" />
